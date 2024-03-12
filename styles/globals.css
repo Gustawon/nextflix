@@ -80,7 +80,7 @@ button {
   --gray20: rgb(156, 163, 175);
   --gray40: rgba(42, 42, 42, 0.6);
 
-  --white10: rgba(255, 255, 255, 1);
+  --white10: rgb(255, 255, 255);
   --white20: rgba(243, 244, 246, 1);
   --white30: rgb(209, 213, 219);
 
@@ -112,6 +112,15 @@ button {
 
   --gradient-from: var(--black);
   --gradient-stops: var(--gradient-from), var(--gradient-to, rgba(0, 0, 0, 0));
+}
+
+.loginBackground {
+  background-color: var(--black);
+  background-image: linear-gradient(rgb(0 0 0 / 60%), rgb(0 0 0 / 60%)),
+    url(/static/nextflix-login-background.jpeg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .smItem {
