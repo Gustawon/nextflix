@@ -13,6 +13,7 @@ export default function Home() {
       >
         <div className={`${roboto_slab.className}`}>NEXTFLIX - div styling</div>
         <div>NEXTFLIX - default app styling</div>
+        <div>Netflix</div>
       </main>
     </>
   );
