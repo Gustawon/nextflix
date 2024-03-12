@@ -61,7 +61,7 @@ const NavBar = (props: NavBarProps) => {
               />
             </button>
             {showDropdown && (
-              <div className="absolute ml-auto mt-2 py-2 bg-gray-800">
+              <div className="absolute ml-auto mt-2 py-2 bg-blackish">
                 <div className="px-4">
                   <Link href="/login" className="">
                     Sign out

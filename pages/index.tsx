@@ -2,6 +2,19 @@ import NavBar from "@/components/navbar";
 import Head from "next/head";
 import { NextPage } from "next/types";
 import Banner from "@/components/banner";
+import { getPopularVideos, getVideos } from "@/lib/videos";
+import SectionCards from "@/components/section-cards";
+import { CardSizes } from "@/components/card";
+
+export async function getServerSideProps() {
+  const disneyVideos: IVideo[] = await getVideos("disney trailer");
+  const productivityVideos: IVideo[] = await getVideos("productivity");
+  const travelVideos: IVideo[] = await getVideos("travel");
+  const popularVideos: IVideo[] = await getPopularVideos();
+  return {
+    props: { disneyVideos, productivityVideos, travelVideos, popularVideos },
+  };
+}
 
 export interface IVideo {
   imgUrl: string;
@@ -35,6 +48,28 @@ const Home: NextPage<HomeProps> = (props) => {
           title="Clifford the red dog"
           subTitle="a very cute dog"
           imgUrl="/static/clifford.webp"
+        />
+
+        {/* Sections */}
+        <SectionCards
+          videos={disneyVideos}
+          title="Disney"
+          size={CardSizes.large}
+        />
+        <SectionCards
+          videos={travelVideos}
+          title="Travel"
+          size={CardSizes.small}
+        />
+        <SectionCards
+          videos={productivityVideos}
+          title="Productivity"
+          size={CardSizes.medium}
+        />
+        <SectionCards
+          videos={popularVideos}
+          title="Popular"
+          size={CardSizes.small}
         />
       </main>
     </>
