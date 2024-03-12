@@ -1,7 +1,7 @@
 import NavBar from "@/components/navbar";
-import { roboto_slab } from "./_app";
 import Head from "next/head";
 import { NextPage } from "next/types";
+import Banner from "@/components/banner";
 
 export interface IVideo {
   imgUrl: string;
@@ -30,10 +30,12 @@ const Home: NextPage<HomeProps> = (props) => {
 
       <NavBar username="sebastian@email.com" />
 
-      <main className={"pb-4"}>
-        <div className={`${roboto_slab.className}`}>NEXTFLIX - div styling</div>
-        <div>NEXTFLIX - default app styling</div>
-        <div>Netflix</div>
+      <main className="relative w-full h-screen">
+        <Banner
+          title="Clifford the red dog"
+          subTitle="a very cute dog"
+          imgUrl="/static/clifford.webp"
+        />
       </main>
     </>
   );

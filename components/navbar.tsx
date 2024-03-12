@@ -34,7 +34,7 @@ const NavBar = (props: NavBarProps) => {
         <Link href="/">
           <Image
             src={"/static/nextflix.png"}
-            alt="Netflix logo"
+            alt="Nextflix logo"
             width="128"
             height="30"
           />
@@ -61,8 +61,8 @@ const NavBar = (props: NavBarProps) => {
               />
             </button>
             {showDropdown && (
-              <div className="absolute ml-auto mt-2 py-2 ">
-                <div>
+              <div className="absolute ml-auto mt-2 py-2 bg-gray-800">
+                <div className="px-4">
                   <Link href="/login" className="">
                     Sign out
                   </Link>
