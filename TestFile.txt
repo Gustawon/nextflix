@@ -1,2 +1,0 @@
-This is test for commit
-This is pull test
