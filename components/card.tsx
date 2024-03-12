@@ -50,7 +50,7 @@ const Card = (props: CardProps) => {
         <Image
           src={imgSrc}
           alt="image"
-          layout="fill"
+          fill
           onError={handleOnError}
           className="block top-0 bottom-0 right-0 left-0 rounded-md object-cover object-center max-w-full "
         />
