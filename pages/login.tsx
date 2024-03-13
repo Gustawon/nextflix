@@ -41,7 +41,6 @@ const Login: NextPage<{}> = (props) => {
             const didToken = await magic.auth.loginWithMagicLink({
               email,
             });
-            console.log({ didToken });
             if (didToken) {
               router.push("/");
             }

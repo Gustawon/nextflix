@@ -20,15 +20,10 @@ export default function App({ Component, pageProps }: AppProps) {
     router.route === "/login" ? false : true
   );
 
-  console.log(router.route);
-
   useEffect(() => {
     const handleLoggedIn = async () => {
-      console.log("in useEffect, do we have magic ? ", magic);
       if (magic) {
         const isLoggedIn = await magic.user.isLoggedIn();
-        console.log("are we logged in?? ", isLoggedIn);
-
         if (isLoggedIn) {
           router.push("/");
         } else {

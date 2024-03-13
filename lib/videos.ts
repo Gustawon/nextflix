@@ -19,7 +19,6 @@ const fetchVideos = async (url: string) => {
 export const getCommonVideos = async (url: string) => {
   try {
     const DEVELOPMENT = process.env.NEXT_PUBLIC_DEVELOPMENT;
-    console.log({ DEVELOPMENT });
 
     // TODO implement development test data fetching depending on url
     const data = DEVELOPMENT

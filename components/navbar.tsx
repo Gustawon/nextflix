@@ -19,7 +19,6 @@ const NavBar = () => {
         if (magic) {
           const { email } = await magic.user.getInfo();
           if (email) {
-            console.log(email);
             setUsername(email);
           }
         }
@@ -53,7 +52,6 @@ const NavBar = () => {
       try {
         if (magic) {
           await magic.user.logout();
-          console.log(await magic.user.isLoggedIn());
           router.push("/login");
         }
       } catch (error) {
