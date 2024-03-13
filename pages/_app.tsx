@@ -2,6 +2,11 @@ import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 
 import { Roboto_Slab } from "next/font/google";
+import { useEffect, useState } from "react";
+
+import magic from "@/lib/magic-client";
+import { useRouter } from "next/router";
+import Loading from "@/components/loading";
 
 export const roboto_slab = Roboto_Slab({
   subsets: ["latin"],
@@ -9,6 +14,48 @@ export const roboto_slab = Roboto_Slab({
 });
 
 export default function App({ Component, pageProps }: AppProps) {
+  const router = useRouter();
+
+  const [isLoading, setIsLoading] = useState(
+    router.route === "/login" ? false : true
+  );
+
+  console.log(router.route);
+
+  useEffect(() => {
+    const handleLoggedIn = async () => {
+      console.log("in useEffect, do we have magic ? ", magic);
+      if (magic) {
+        const isLoggedIn = await magic.user.isLoggedIn();
+        console.log("are we logged in?? ", isLoggedIn);
+
+        if (isLoggedIn) {
+          router.push("/");
+        } else {
+          router.push("/login");
+        }
+      } else {
+        router.push("/login");
+      }
+    };
+    handleLoggedIn();
+  }, []);
+
+  useEffect(() => {
+    const handleComplete = () => {
+      setIsLoading(false);
+    };
+
+    router.events.on("routeChangeComplete", handleComplete);
+    router.events.on("routeChangeError", handleComplete);
+
+    return () => {
+      // clear events listeners
+      router.events.off("routeChangeComplete", handleComplete);
+      router.events.off("routeChangeError", handleComplete);
+    };
+  }, [router]);
+
   return (
     <>
       <style jsx global>
@@ -18,7 +65,7 @@ export default function App({ Component, pageProps }: AppProps) {
           }
         `}
       </style>
-      <Component {...pageProps} />
+      {isLoading ? <Loading /> : <Component {...pageProps} />}
     </>
   );
 }

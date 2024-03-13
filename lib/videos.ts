@@ -1,16 +1,30 @@
 import { IVideo } from "@/pages";
 
-export const getCommonVideos = async (url: string) => {
+// import disneyVideosTestData from "../data/videos-disney.json";
+// import popularVideosTestData from "../data/videos-popular.json";
+import productivityVideosTestData from "../data/videos-productivity.json";
+// import travelVideosTestData from "../data/videos-travel.json";
+
+const fetchVideos = async (url: string) => {
   const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
+  const BASE_URL = "https://youtube.googleapis.com/youtube/v3";
 
+  const response = await fetch(
+    `${BASE_URL}/${url}&maxResults=15&key=${YOUTUBE_API_KEY}`
+  );
+
+  return await response.json();
+};
+
+export const getCommonVideos = async (url: string) => {
   try {
-    const BASE_URL = "https://youtube.googleapis.com/youtube/v3";
+    const DEVELOPMENT = process.env.NEXT_PUBLIC_DEVELOPMENT;
+    console.log({ DEVELOPMENT });
 
-    const response = await fetch(
-      `${BASE_URL}/${url}&maxResults=15&key=${YOUTUBE_API_KEY}`
-    );
-
-    const data = await response.json();
+    // TODO implement development test data fetching depending on url
+    const data = DEVELOPMENT
+      ? productivityVideosTestData
+      : await fetchVideos(url);
 
     if (data?.error) {
       console.error("Youtube API error", data.error);

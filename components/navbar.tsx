@@ -2,16 +2,34 @@ import Link from "next/link";
 import Image from "next/image";
 
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import magic from "@/lib/magic-client";
 
-interface NavBarProps {
-  username: string;
-}
+interface NavBarProps {}
 
-const NavBar = (props: NavBarProps) => {
+const NavBar = () => {
   const router = useRouter();
 
   const [showDropdown, setShowDropdown] = useState(false);
+  const [username, setUsername] = useState("");
+
+  useEffect(() => {
+    async function getUsername() {
+      try {
+        if (magic) {
+          const { email } = await magic.user.getInfo();
+          if (email) {
+            console.log(email);
+            setUsername(email);
+          }
+        }
+      } catch (error) {
+        console.log("Error retrieving email:", error);
+        // router.push("/login");
+      }
+    }
+    getUsername();
+  });
 
   const handleOnClickHome = () => {
     // e.preventDefault();
@@ -27,7 +45,25 @@ const NavBar = (props: NavBarProps) => {
     setShowDropdown(!showDropdown);
   };
 
-  const { username } = props;
+  const handleSignout: React.MouseEventHandler<HTMLAnchorElement> = async (
+    e
+  ) => {
+    e.preventDefault();
+    async function logOutUser() {
+      try {
+        if (magic) {
+          await magic.user.logout();
+          console.log(await magic.user.isLoggedIn());
+          router.push("/login");
+        }
+      } catch (error) {
+        console.error("Error logging out", error);
+        router.push("/login");
+      }
+    }
+    logOutUser();
+  };
+
   return (
     <nav className={"fixed top-0 text-white10 navbarBackground w-full z-50"}>
       <div className="flex px-4 py-5">
@@ -63,9 +99,12 @@ const NavBar = (props: NavBarProps) => {
             {showDropdown && (
               <div className="absolute ml-auto mt-2 py-2 bg-blackish">
                 <div className="px-4">
-                  <Link href="/login" className="">
+                  <a
+                    onClick={(e) => handleSignout(e)}
+                    className="cursor-pointer"
+                  >
                     Sign out
-                  </Link>
+                  </a>
                 </div>
               </div>
             )}

@@ -19,7 +19,7 @@ const Banner = (props: BannerProps) => {
           {/* Nseries wrapper */}
           <div className="flex">
             {/* First letter */}
-            <p className="text-6xl text-red-700 font-extrabold">N</p>
+            <p className="text-6xl text-redish font-extrabold">N</p>
             <p className="text-sm text-gray-400 self-center">S E R I E S</p>
           </div>
           <h3 className="text-6xl font-extrabold text-gray-100">{title}</h3>

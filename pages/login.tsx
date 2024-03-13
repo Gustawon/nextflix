@@ -3,24 +3,57 @@ import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
 
-import { useState, ChangeEvent, MouseEvent } from "react";
+import { useState, ChangeEvent, MouseEvent, useEffect } from "react";
 import { useRouter } from "next/router";
+
+import { validateEmail } from "@/lib/email";
+
+import magic from "../lib/magic-client";
 
 const Login: NextPage<{}> = (props) => {
   const [userMsg, setUserMsg] = useState("");
   const [email, setEmail] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
 
-  const handleLoginWithEmail = (event: MouseEvent) => {
+  useEffect(() => {
+    const handleComplete = () => {
+      setIsLoading(false);
+    };
+    router.events.on("routeChangeComplete", handleComplete);
+    router.events.on("routeChangeError", handleComplete);
+    return () => {
+      router.events.off("routeChangeComplete", handleComplete);
+      router.events.off("routeChangeError", handleComplete);
+    };
+  }, [router]);
+
+  const handleLoginWithEmail = async (event: MouseEvent) => {
     event.preventDefault();
 
     if (email) {
-      // TODO implement email validation
-      if (email === "sebastian@email.com") {
-        router.push("/");
+      if (validateEmail(email)) {
+        // log in a user by their email
+        try {
+          setIsLoading(true);
+          if (magic) {
+            const didToken = await magic.auth.loginWithMagicLink({
+              email,
+            });
+            console.log({ didToken });
+            if (didToken) {
+              router.push("/");
+            }
+          }
+        } catch (error) {
+          // Handle errors if required!
+          console.error("Something went wrong logging in", error);
+          setIsLoading(false);
+        }
       } else {
         setUserMsg("Something went wrong when logging in");
+        setIsLoading(false);
       }
     } else {
       // show user message
@@ -43,7 +76,7 @@ const Login: NextPage<{}> = (props) => {
           <div className="px-8 md:px-16 flex flex-row">
             <Link
               className="flex font-medium items-center text-white10 mb-4"
-              href="/"
+              href="/login"
             >
               <div className="text-redish w-32">
                 <Image
@@ -70,7 +103,7 @@ const Login: NextPage<{}> = (props) => {
               onClick={handleLoginWithEmail}
               className="bg-redish10 px-12 py-2 text-lg text-white10 w-full rounded-md mt-8"
             >
-              Login
+              {isLoading ? "Loading.." : "Login"}
             </button>
           </form>
         </main>

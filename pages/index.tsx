@@ -41,7 +41,7 @@ const Home: NextPage<HomeProps> = (props) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <NavBar username="sebastian@email.com" />
+      <NavBar />
 
       <main className="relative w-full h-screen">
         <Banner
