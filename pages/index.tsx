@@ -21,6 +21,9 @@ export interface IVideo {
   title: string;
   description: string;
   id: string | number;
+  publishTime?: string;
+  channelTitle?: string;
+  statistics?: { viewCount: number };
 }
 
 interface HomeProps {
@@ -45,6 +48,7 @@ const Home: NextPage<HomeProps> = (props) => {
 
       <main className="relative w-full h-screen">
         <Banner
+          videoId="4zH5iYM4wJo"
           title="Clifford the red dog"
           subTitle="a very cute dog"
           imgUrl="/static/clifford.webp"

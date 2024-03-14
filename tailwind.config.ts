@@ -13,6 +13,7 @@ const config: Config = {
         blackish: "#141414",
         blackish20: "#00000099",
         blackish30: "#111827",
+        blackish40: "141414",
         white10: "#ffffff",
         white20: "#f3f4f6",
         redish: "#dc2626",

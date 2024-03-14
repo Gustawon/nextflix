@@ -1,8 +1,8 @@
 import { IVideo } from "@/pages";
 
-// import disneyVideosTestData from "../data/videos-disney.json";
+import disneyVideosTestData from "../data/videos-disney.json";
 // import popularVideosTestData from "../data/videos-popular.json";
-import productivityVideosTestData from "../data/videos-productivity.json";
+// import productivityVideosTestData from "../data/videos-productivity.json";
 // import travelVideosTestData from "../data/videos-travel.json";
 
 const fetchVideos = async (url: string) => {
@@ -20,17 +20,15 @@ export const getCommonVideos = async (url: string) => {
   try {
     const DEVELOPMENT = process.env.NEXT_PUBLIC_DEVELOPMENT;
 
-    // TODO implement development test data fetching depending on url
-    const data = DEVELOPMENT
-      ? productivityVideosTestData
-      : await fetchVideos(url);
+    // development test data fetching
+    const data = DEVELOPMENT ? disneyVideosTestData : await fetchVideos(url);
+    // const data = await fetchVideos(url);
 
     if (data?.error) {
       console.error("Youtube API error", data.error);
       return [];
     }
 
-    // fix return data type from google api - or
     // todo implement data fetching with GraphQL
     return data.items.map((item: any) => {
       const id = item.id?.videoId || item.id;
@@ -39,6 +37,9 @@ export const getCommonVideos = async (url: string) => {
         description: item.snippet.description,
         imgUrl: item.snippet.thumbnails.high.url,
         id,
+        publishTime: item.snippet.publishedAt,
+        channelTitle: item.snippet.channelTitle || "",
+        statistics: item.statistics ? item.statistics : { viewCount: 0 },
       } as IVideo;
     });
   } catch (error) {
@@ -55,6 +56,21 @@ export const getVideos = (searchQuery: string) => {
 
 export const getPopularVideos = () => {
   const URL = `videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&regionCode=US`;
+
+  return getCommonVideos(URL);
+};
+
+export const getYoutubeVideoById = async (videoId: string) => {
+  const URL = `videos?part=snippet%2CcontentDetails%2Cstatistics&id=${videoId}`;
+
+  const DEVELOPMENT = process.env.NEXT_PUBLIC_DEVELOPMENT;
+
+  if (DEVELOPMENT) {
+    console.log("DEVELOPMENT - getting 1 video data from json");
+    const videos: IVideo[] = await getCommonVideos(URL);
+    console.log("DEVELOPMENT got VIDEOs, ", videos);
+    return videos.filter((el) => el.id === videoId);
+  }
 
   return getCommonVideos(URL);
 };

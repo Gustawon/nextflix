@@ -1,15 +1,18 @@
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 interface BannerProps {
   title: string;
   subTitle: string;
   imgUrl: string;
+  videoId: string;
 }
 const Banner = (props: BannerProps) => {
-  const { title, subTitle, imgUrl } = props;
+  const { title, subTitle, imgUrl, videoId } = props;
+  const router = useRouter();
 
   const handleOnPlay = () => {
-    console.log("handleOnPlay");
+    router.push(`video/${videoId}`);
   };
   return (
     // Container
